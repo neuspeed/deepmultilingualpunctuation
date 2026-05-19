@@ -4,11 +4,11 @@ import re
 import torch
 
 class PunctuationModel():
-    def __init__(self, model = "oliverguhr/fullstop-punctuation-multilang-large") -> None:        
-        if torch.cuda.is_available():
+    def __init__(self, model = "oliverguhr/fullstop-punctuation-multilang-large", device='cpu') -> None:        
+        if torch.cuda.is_available() and device == 'cuda':
             self.pipe = pipeline("ner",model, aggregation_strategy="none", device=0)
         else:
-            self.pipe = pipeline("ner",model, aggregation_strategy="none")        
+            self.pipe = pipeline("ner",model, aggregation_strategy="none", device=-1)        
 
     def preprocess(self,text):
         #remove markers except for markers in numbers 
